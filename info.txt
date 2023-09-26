@@ -1,0 +1,38 @@
+
+
+- http://localhost:8765/exchange-conversion/currency-conversion/from/EUR/to/INR/quantity/10
+
+-http://localhost:8765/exchange-service/currency-exchange/from/EUR/to/INR 
+
+
+
+docker run -p 8000:8000 sharshu/mmv3-currency-exc-service:0.0.1-snapshot
+
+resilience4j.retry.instances.sample-api.maxAttempts=5 #NEW
+#resilience4j.retry.instances.sample-api.maxRetryAttempts=5 #OLD
+
+http://localhost:8000/currency-exchange/from/EUR/to/INR
+http://localhost:8100/currency-conversion/from/EUR/to/INR/quantity/10
+http://localhost:8080/h2-console
+http://localhost:9411/ --> zipkin
+
+
+#### Eureka
+- http://localhost:8761/
+
+#### Zipkin
+- http://localhost:9411/
+
+
+
+#### Commands
+```
+docker run -p 9411:9411 openzipkin/zipkin:2.23
+docker push docker.io/sharshu/mmv3-currency-exc-service:0.0.1-snapshot
+docker-compose --version
+docker-compose up
+docker push sharshu/mmv3-naming-server:0.0.1-snapshot
+docker push sharshu/mmv3-currency-conversion-service:0.0.1-snapshotT
+docker push sharshu/mmv3-api-gateway:0.0.1-SNAPSHOT
+watch -n 0.1 curl http://localhost:8000/sample-api
+```
